@@ -16,8 +16,8 @@ mkdir -p "$INSTALL_DIR"
 # Download script files
 echo "📥 Downloading script files..."
 if command -v curl >/dev/null 2>&1; then
-    curl -fsSL "https://raw.githubusercontent.com/your-repo/piper-tts-script/main/piper-tts_from_clipboard.sh" -o "$INSTALL_DIR/piper-tts_from_clipboard.sh"
-    curl -fsSL "https://raw.githubusercontent.com/your-repo/piper-tts-script/main/README.md" -o "$INSTALL_DIR/README.md"
+    curl -fsSL "https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/piper-tts_from_clipboard.sh" -o "$INSTALL_DIR/piper-tts_from_clipboard.sh"
+    curl -fsSL "https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/README.md" -o "$INSTALL_DIR/README.md"
 else
     echo "❌ curl not found. Please install curl first."
     exit 1
