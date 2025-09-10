@@ -2,104 +2,213 @@
 
 > AI-assisted development using [Perplexity AI](https://perplexity.ai) and [Warp Terminal](https://warp.dev)
 
-Text-to-speech script using [Piper TTS](https://github.com/rhasspy/piper) with auto-installation and Raycast integration.
+Converts text to high-quality speech using [Piper TTS](https://github.com/rhasspy/piper). Works from Terminal or Raycast with automatic setup.
 
-## Features
-- Auto-installs dependencies (ffmpeg, piper-tts)
-- Multi-environment support (Terminal, Raycast)
-- Voice model auto-detection
-- Configurable playback speed (default 2x)
-- Clipboard or text input
+## What This Does
+- Reads text from your clipboard and speaks it aloud
+- Automatically installs all required software (ffmpeg, piper-tts)
+- Works in Terminal, Raycast, and other automation tools
+- Supports multiple languages and voice models
+- Plays audio at 2x speed by default (customizable)
+- Handles both clipboard text and direct text input
 
 ## Installation
 
-### Auto-install
+### Quick Setup (Recommended)
+1. Open Terminal (find it in Applications > Utilities)
+2. Copy and paste this command:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/install.sh | bash
 ```
+3. Press Enter and wait for installation to complete
+4. The script will be installed to `~/piper-tts-script/`
 
-### Manual
+### Manual Installation
+If you prefer to download manually:
+
+1. Download the script file:
 ```bash
-# Download script
-wget https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/piper-tts_from_clipboard.sh
-chmod +x piper-tts_from_clipboard.sh
+curl -O https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/piper-tts_from_clipboard.sh
+```
 
-# Run once to install dependencies
+2. Make it executable:
+```bash
+chmod +x piper-tts_from_clipboard.sh
+```
+
+3. Run it once to install dependencies:
+```bash
 ./piper-tts_from_clipboard.sh
 ```
 
-## Usage
+**Note**: The first run will automatically install ffmpeg and piper-tts. This requires Homebrew, which will also be installed if needed.
 
-### Terminal
+## How to Use
+
+### From Terminal
+Open Terminal and run the script:
+
 ```bash
-./piper-tts_from_clipboard.sh                    # Speak clipboard
-./piper-tts_from_clipboard.sh "Hello world"      # Speak text
-./piper-tts_from_clipboard.sh --help             # Show help
+# Speak whatever text is currently in your clipboard
+./piper-tts_from_clipboard.sh
+
+# Speak specific text directly
+./piper-tts_from_clipboard.sh "Hello world, this is a test"
+
+# Show all available options
+./piper-tts_from_clipboard.sh --help
 ```
+
+**Tip**: Copy any text to your clipboard (Cmd+C), then run the script to hear it spoken aloud.
 
 ### Raycast Integration
-1. **Add Script Command**: Raycast → Extensions → Script Commands → Add Script Command
-2. **Configure**:
-   - **Script**: `/path/to/piper-tts_from_clipboard.sh`
+Raycast is a productivity app that lets you run scripts with keyboard shortcuts.
+
+1. **Install Raycast** (if you haven't already): Download from [raycast.com](https://raycast.com)
+
+2. **Add the Script**:
+   - Open Raycast (Cmd+Space)
+   - Type "Create Script Command" and press Enter
+   - Or go to Raycast → Extensions → Script Commands → Add Script Command
+
+3. **Configure the Script**:
+   - **Title**: "Speak Clipboard" (or whatever you prefer)
+   - **Script**: Enter the full path to your script file
+     - If you used quick setup: `~/piper-tts-script/piper-tts_from_clipboard.sh`
+     - If manual: `/path/to/your/piper-tts_from_clipboard.sh`
    - **Shell**: `bash`
    - **Mode**: `compact`
-   - **Package Name**: `TTS`
-3. **Set Icon**: Choose microphone/speaker emoji
-4. **Keyword**: `tts` or `speak`
+   - **Package Name**: `TTS` or `Text to Speech`
+   - **Icon**: Choose a microphone or speaker emoji
+   - **Keyword**: `tts`, `speak`, or `read` (whatever you want to type to trigger it)
 
-### Configuration
+4. **Use It**:
+   - Copy any text (Cmd+C)
+   - Open Raycast (Cmd+Space)
+   - Type your keyword (e.g., "tts")
+   - Press Enter to hear your text spoken
+
+## Customization
+
+### Change Voice Model
+The script uses British English by default. To use a different voice:
+
 ```bash
-# Environment variables
-export PIPER_MODEL="en_GB-alba-medium"           # Voice model
-export PIPER_VOICES_DIR="/path/to/voices"        # Voice directory
+# Use American English (if you have the model)
+export PIPER_MODEL="en_US-lessac-medium"
+./piper-tts_from_clipboard.sh
 
-# Speed (edit SPEED_MULTIPLIER in script)
-SPEED_MULTIPLIER="2.0"  # 2x speed (default)
+# Use German (if you have the model)
+export PIPER_MODEL="de_DE-thorsten-medium"
+./piper-tts_from_clipboard.sh
 ```
 
-## Voice Models
-
-Default: `en_GB-alba-medium` (British English)
-
-### Download Additional Models
+### Change Speaking Speed
+Edit the script file and change this line:
 ```bash
-# Download to ~/.local/share/piper/models/
+SPEED_MULTIPLIER="2.0"  # Change to 1.0 for normal speed, 3.0 for faster
+```
+
+### Custom Voice Directory
+If you want to store voice models in a specific location:
+```bash
+export PIPER_VOICES_DIR="/Users/yourname/MyVoices"
+```
+
+## Voice Models and Languages
+
+The script comes with British English voice by default. You can add more languages and voices.
+
+### Available Languages
+- **English**: US, UK, Australian accents
+- **European**: French, German, Spanish, Italian, Dutch, Portuguese
+- **Other**: Russian, Arabic, and many more
+
+### Adding New Voices
+1. **Browse available voices**: Visit [Hugging Face Piper Voices](https://huggingface.co/rhasspy/piper-voices)
+
+2. **Download a voice model**: 
+```bash
+# Go to the voice models directory
 cd ~/.local/share/piper/models
 
-# British English
-curl -L https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_GB/alba/medium/en_GB-alba-medium.onnx -o en_GB-alba-medium.onnx
-curl -L https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_GB/alba/medium/en_GB-alba-medium.onnx.json -o en_GB-alba-medium.onnx.json
-
-# Use different model
-PIPER_MODEL=en_GB-alba-medium ./piper-tts_from_clipboard.sh
+# Example: Download American English voice
+curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx" -o en_US-lessac-medium.onnx
+curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json" -o en_US-lessac-medium.onnx.json
 ```
 
-More models: [Hugging Face](https://huggingface.co/rhasspy/piper-voices)
+3. **Use the new voice**:
+```bash
+PIPER_MODEL=en_US-lessac-medium ./piper-tts_from_clipboard.sh
+```
+
+### Popular Voice Models
+- `en_US-lessac-medium` - American English (clear, professional)
+- `en_GB-alba-medium` - British English (default)
+- `fr_FR-siwis-medium` - French
+- `de_DE-thorsten-medium` - German
+- `es_ES-davefx-medium` - Spanish
 
 ## Troubleshooting
 
-### Debug Mode
+### If Something Goes Wrong
+
+**Enable debug mode** to see detailed information:
 ```bash
 DEBUG=1 ./piper-tts_from_clipboard.sh
 ```
 
-### Common Issues
-- **Dependencies missing**: Run script in Terminal first to auto-install
-- **Voice model not found**: Check `ls ~/.local/share/piper/models/`
-- **Audio issues**: Test with `ffplay /System/Library/Sounds/Ping.aiff`
-- **Raycast issues**: Verify script path is absolute
+### Common Issues and Solutions
 
-## Requirements
-- macOS 11+
-- ~50MB disk space
-- Network access (initial setup)
+**"Command not found" or "Dependencies missing"**
+- Solution: Run the script once in Terminal to auto-install everything
+- The script will install Homebrew, ffmpeg, and piper-tts automatically
 
-## File Locations
-- Voice models: `~/.local/share/piper/models/`
-- Piper binary: `~/.local/bin/piper`
-- Temp files: `/tmp/piper_clip_*.wav`
+**"Voice model not found"**
+- Check what models you have: `ls ~/.local/share/piper/models/`
+- The script will try to download the default model on first run
+- If that fails, manually download a model (see Voice Models section above)
 
-## Credits
-- **[Piper TTS](https://github.com/rhasspy/piper)** - Core TTS engine
-- **[Perplexity AI](https://perplexity.ai)** - Research assistance  
-- **[Warp Terminal](https://warp.dev)** - AI development environment
+**"No audio" or "Audio not playing"**
+- Test your audio: `ffplay /System/Library/Sounds/Ping.aiff`
+- Check your volume and audio output device
+- Try running the script from Terminal first to see error messages
+
+**Raycast not working**
+- Make sure you're using the full path to the script file
+- Example: `/Users/yourname/piper-tts-script/piper-tts_from_clipboard.sh`
+- Try running the script in Terminal first to ensure it works
+- Check that the script file has execute permissions: `chmod +x scriptname.sh`
+
+**Script runs but no sound**
+- Your clipboard might be empty - copy some text first
+- The text might be too long - try with shorter text
+- Check if other apps are using your audio
+
+## System Requirements
+- **macOS**: Version 11 (Big Sur) or newer
+- **Disk Space**: About 50MB for the software and voice models  
+- **Internet**: Required for initial setup and downloading voice models
+- **Audio**: Working speakers or headphones
+
+## Technical Details
+
+### File Locations
+- **Voice models**: `~/.local/share/piper/models/`
+- **Piper binary**: `~/.local/bin/piper` (installed via pipx)
+- **Temporary audio files**: `/tmp/piper_clip_*.wav` (auto-cleaned)
+
+### What Gets Installed
+When you first run the script, it automatically installs:
+- **Homebrew**: macOS package manager (if not already installed)
+- **ffmpeg**: Audio processing software
+- **pipx**: Python application installer  
+- **piper-tts**: The text-to-speech engine
+
+## Credits and Acknowledgments
+- **[Piper TTS](https://github.com/rhasspy/piper)** - The excellent neural text-to-speech system that powers this script
+- **[Rhasspy Community](https://github.com/rhasspy)** - For creating and maintaining the voice models
+- **[Perplexity AI](https://perplexity.ai)** - AI research assistance during development
+- **[Warp Terminal](https://warp.dev)** - AI-powered terminal used for collaborative development
+
+This project demonstrates human-AI collaboration in software development, combining human creativity with AI assistance to create a robust, user-friendly tool.
