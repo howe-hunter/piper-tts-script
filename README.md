@@ -1,15 +1,18 @@
 # 🔊 Piper TTS Clipboard Script
 
-A robust, user-friendly script that converts text to speech using Piper TTS with customizable playback speed. Perfect for Raycast integration or command-line use.
+> 🤖 **Created through "vibe coding" with AI assistance** - This script was developed collaboratively using [Perplexity AI](https://perplexity.ai) for research and [Warp Terminal's Agent Mode](https://warp.dev) for implementation. It's a prime example of human creativity enhanced by AI tools to solve real-world problems.
+
+A robust, user-friendly script that converts text to speech using [Piper TTS](https://github.com/rhasspy/piper) with customizable playback speed. Perfect for Raycast integration or command-line use.
 
 ## ✨ Features
 
 - **Smart Installation**: Automatically detects and installs missing dependencies
-- **Multi-Environment Support**: Works in Terminal, Raycast, and other automation tools
+- **Multi-Environment Support**: Works in Terminal, Raycast, and other automation tools  
 - **Voice Model Management**: Automatically finds and downloads voice models
 - **Customizable Speed**: Adjustable playback speed (default 2x)
 - **Robust Error Handling**: Clear error messages and graceful failure handling
 - **Multiple Input Sources**: Use clipboard content or provide text as arguments
+- **AI-Enhanced Development**: Built through collaborative human-AI "vibe coding" for maximum robustness
 
 ## 🚀 Quick Start
 
@@ -168,12 +171,51 @@ Feel free to modify and improve the script! Some ideas:
 - Add batch processing capabilities
 - Create a GUI version
 
+## 📚 Development Story
+
+This project showcases the power of **"vibe coding"** - collaborative development between humans and AI:
+
+### The Journey:
+1. **🎯 Problem**: Simple TTS script that only worked in specific environments
+2. **🔍 Research**: Used [Perplexity AI](https://perplexity.ai) to research Piper TTS capabilities and best practices
+3. **🚀 Implementation**: Leveraged [Warp Terminal's Agent Mode](https://warp.dev) to iteratively build and test
+4. **🛠️ Refinement**: Through multiple iterations, transformed a basic script into a production-ready tool
+5. **📄 Documentation**: AI assistance helped create comprehensive documentation and error handling
+
+### What AI Helped With:
+- **Robust error handling** - Anticipating edge cases and failure modes
+- **Cross-environment compatibility** - Handling different macOS setups and PATH configurations
+- **Dependency management** - Automatic installation and verification logic
+- **User experience** - Clear messaging, help systems, and installation scripts
+- **Documentation** - Comprehensive README with troubleshooting guides
+
+### Human Creativity:
+- **Original vision** - Text-to-speech automation for productivity
+- **Requirements definition** - Making it shareable and user-friendly
+- **Testing and validation** - Real-world usage and iteration
+- **Design decisions** - Balancing features with simplicity
+
+**Result**: What started as a 60-line personal script became a 341-line robust tool that anyone can use!
+
 ## 📄 License
 
 This script is provided as-is for personal and educational use. Piper TTS is licensed under the MIT License.
 
 ## 🙏 Acknowledgments
 
-- [Piper TTS](https://github.com/rhasspy/piper) by Rhasspy for the excellent TTS engine
-- [Raycast](https://raycast.com/) for the automation platform
-- [Homebrew](https://brew.sh/) for macOS package management
+### Core Technology
+- **[Piper TTS](https://github.com/rhasspy/piper)** by [Rhasspy](https://github.com/rhasspy) - The fantastic open-source neural text-to-speech system that powers this script
+- **[Rhasspy Community](https://github.com/rhasspy)** - For creating and maintaining high-quality voice models
+
+### Development Tools
+- **[Perplexity AI](https://perplexity.ai)** - Research and problem-solving assistance
+- **[Warp Terminal](https://warp.dev)** - AI-powered terminal with Agent Mode for collaborative coding
+- **[Raycast](https://raycast.com/)** - The automation platform that inspired better cross-environment compatibility
+
+### Infrastructure
+- **[Homebrew](https://brew.sh/)** - macOS package management
+- **[pipx](https://pipx.pypa.io/)** - Isolated Python application installation
+- **[Hugging Face](https://huggingface.co/rhasspy/piper-voices)** - Voice model distribution
+
+### Inspiration
+This project demonstrates the potential of **human-AI collaboration** in software development - where human creativity and problem-solving combines with AI's ability to handle complexity, edge cases, and comprehensive documentation.
