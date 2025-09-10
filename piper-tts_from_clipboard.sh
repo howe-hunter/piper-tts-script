@@ -1,4 +1,4 @@
-s#!/bin/bash
+#!/bin/bash
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title Piper TTS Clipboard
@@ -13,10 +13,13 @@ s#!/bin/bash
 # =============================================================================
 
 # Default voice model (can be overridden by environment variable PIPER_MODEL)
-DEFAULT_MODEL="en_US-lessac-medium"  # Changed to more common US English model
+DEFAULT_MODEL="en_GB-alba-medium"  # British English model
 
 # Speed multiplier for audio playback (1.0 = normal, 2.0 = double speed)
 SPEED_MULTIPLIER="2.0"
+
+# Debug mode (set DEBUG=1 to enable verbose output)
+DEBUG="${DEBUG:-0}"
 
 # Temporary file locations
 TMPWAV="/tmp/piper_clip_$$.wav"  # Use process ID to avoid conflicts
@@ -37,6 +40,12 @@ log_error() {
 
 log_success() {
     echo "✅ $1" >&2
+}
+
+log_debug() {
+    if [[ "$DEBUG" == "1" ]]; then
+        echo "🔍 DEBUG: $1" >&2
+    fi
 }
 
 # Check if a command exists
@@ -212,13 +221,22 @@ if ! command_exists pbpaste; then
     exit 1
 fi
 
+# Detect if we're running in Raycast or other automation tool
+IS_INTERACTIVE=false
+log_debug "Environment detection: stdin_tty=[[ -t 0 ]]=$([[ -t 0 ]] && echo true || echo false), stdout_tty=[[ -t 1 ]]=$([[ -t 1 ]] && echo true || echo false), TERM=$TERM, PWD=$PWD"
+if [[ -t 0 ]] && [[ -t 1 ]] && [[ -z "$RAYCAST" ]] && [[ -z "$RAYCAST_SCRIPT" ]] && [[ "$TERM" != "dumb" ]]; then
+    IS_INTERACTIVE=true
+fi
+log_debug "Interactive mode: $IS_INTERACTIVE"
+
 # Install missing dependencies if in interactive mode
-if [[ -t 0 ]] && [[ -z "$RAYCAST_SCRIPT" ]]; then
+if [[ "$IS_INTERACTIVE" == "true" ]]; then
     install_dependencies
 fi
 
 # Find piper installation
 PIPER_CMD=$(find_piper)
+log_debug "Found piper at: $PIPER_CMD"
 if [ -z "$PIPER_CMD" ]; then
     log_error "Piper TTS not found. Please install it with: pipx install piper-tts"
     log_info "Or run this script in a terminal to auto-install dependencies"
@@ -227,20 +245,23 @@ fi
 
 # Determine voice model to use
 MODEL="${PIPER_MODEL:-$DEFAULT_MODEL}"
+log_debug "Using voice model: $MODEL"
 
 # Find voice directory
 VOICE_DIR=$(find_voice_dir)
+log_debug "Found voice directory: $VOICE_DIR"
 if [ -z "$VOICE_DIR" ]; then
     # Create default voice directory
     VOICE_DIR="$HOME/.local/share/piper/models"
     mkdir -p "$VOICE_DIR"
     
     # Download default model if we're in interactive mode
-    if [[ -t 0 ]] && [[ -z "$RAYCAST_SCRIPT" ]]; then
+    if [[ "$IS_INTERACTIVE" == "true" ]]; then
         download_default_model "$MODEL" "$VOICE_DIR"
     else
         log_error "No voice models found. Please download a voice model or run this script in a terminal to auto-download."
         log_info "Voice models should be placed in: $VOICE_DIR"
+        log_info "Available models in current directory: $(ls -1 *.onnx 2>/dev/null | sed 's/\.onnx$//' | tr '\n' ', ' | sed 's/,$//' || echo 'none')"
         exit 1
     fi
 fi
