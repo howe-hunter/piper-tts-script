@@ -148,14 +148,31 @@ download_default_model() {
         mkdir -p "$voice_dir"
         
         # Download model files from Hugging Face
-        local base_url="https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium"
+        # Map model names to their download URLs
+        local base_url
+        local source_name
         
-        curl -L "${base_url}/en_US-lessac-medium.onnx" -o "$voice_dir/${model_name}.onnx" || {
+        case "$model_name" in
+            "en_GB-alba-medium")
+                base_url="https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_GB/alba/medium"
+                source_name="en_GB-alba-medium"
+                ;;
+            "en_US-lessac-medium")
+                base_url="https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium"
+                source_name="en_US-lessac-medium"
+                ;;
+            *)
+                log_error "Unknown model: $model_name. Please download it manually."
+                return 1
+                ;;
+        esac
+        
+        curl -L "${base_url}/${source_name}.onnx" -o "$voice_dir/${model_name}.onnx" || {
             log_error "Failed to download voice model"
             return 1
         }
         
-        curl -L "${base_url}/en_US-lessac-medium.onnx.json" -o "$voice_dir/${model_name}.onnx.json" || {
+        curl -L "${base_url}/${source_name}.onnx.json" -o "$voice_dir/${model_name}.onnx.json" || {
             log_error "Failed to download voice model config"
             return 1
         }
