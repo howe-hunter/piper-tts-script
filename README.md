@@ -49,11 +49,16 @@ chmod +x piper-tts_from_clipboard.sh
 Open Terminal and run the script:
 
 ```bash
-# Speak whatever text is currently in your clipboard
+# Speak whatever text is currently in your clipboard (2x speed default)
 ./piper-tts_from_clipboard.sh
 
 # Speak specific text directly
 ./piper-tts_from_clipboard.sh "Hello world, this is a test"
+
+# Control playback speed
+./piper-tts_from_clipboard.sh --speed 1.0      # Normal speed
+./piper-tts_from_clipboard.sh -s 3.0          # 3x speed (clipboard)
+./piper-tts_from_clipboard.sh -s 1.5 "Hello"  # 1.5x speed with text
 
 # Show all available options
 ./piper-tts_from_clipboard.sh --help
@@ -104,9 +109,23 @@ export PIPER_MODEL="de_DE-thorsten-medium"
 ```
 
 ### Change Speaking Speed
-Edit the script file and change this line:
+Multiple ways to control playback speed:
+
+**Command line (easiest)**:
 ```bash
-SPEED_MULTIPLIER="2.0"  # Change to 1.0 for normal speed, 3.0 for faster
+./piper-tts_from_clipboard.sh --speed 1.0     # Normal speed
+./piper-tts_from_clipboard.sh -s 1.5          # 1.5x speed
+```
+
+**Environment variable**:
+```bash
+export PIPER_SPEED=1.5
+./piper-tts_from_clipboard.sh                 # Uses 1.5x speed
+```
+
+**Edit script file** (permanent change):
+```bash
+DEFAULT_SPEED="1.0"  # Change default from 2.0 to 1.0
 ```
 
 ### Custom Voice Directory

@@ -16,7 +16,9 @@
 DEFAULT_MODEL="en_GB-alba-medium"  # British English model
 
 # Speed multiplier for audio playback (1.0 = normal, 2.0 = double speed)
-SPEED_MULTIPLIER="2.0"
+# Can be overridden with PIPER_SPEED environment variable
+DEFAULT_SPEED="2.0"
+SPEED_MULTIPLIER="${PIPER_SPEED:-$DEFAULT_SPEED}"
 
 # Debug mode (set DEBUG=1 to enable verbose output)
 DEBUG="${DEBUG:-0}"
@@ -182,6 +184,40 @@ download_default_model() {
 }
 
 # =============================================================================
+# ARGUMENT PARSING
+# =============================================================================
+
+# Parse command-line arguments
+TEXT_INPUT=""
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --help|-h)
+            # Will be handled in help section below
+            break
+            ;;
+        --speed|-s)
+            if [[ -n $2 && $2 =~ ^[0-9]*(\.[0-9]+)?$ ]]; then
+                SPEED_MULTIPLIER="$2"
+                shift 2
+            else
+                log_error "--speed requires a numeric value (e.g., 1.0, 1.5, 2.0)"
+                exit 1
+            fi
+            ;;
+        --*|-*)
+            log_error "Unknown option: $1"
+            echo "Use --help for usage information" >&2
+            exit 1
+            ;;
+        *)
+            # This is the text to speak
+            TEXT_INPUT="$1"
+            break
+            ;;
+    esac
+done
+
+# =============================================================================
 # HELP AND USAGE
 # =============================================================================
 
@@ -192,18 +228,26 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
 Converts text to speech using Piper TTS with customizable speed.
 
 USAGE:
-    $0 [text]                    # Speak provided text
-    $0                           # Speak clipboard content
+    $0 [OPTIONS] [text]          # Speak provided text
+    $0 [OPTIONS]                 # Speak clipboard content
     $0 --help                    # Show this help
+
+OPTIONS:
+    -s, --speed SPEED            # Playback speed (1.0=normal, 2.0=double, etc.)
+    -h, --help                   # Show this help
 
 CONFIGURATION:
     PIPER_MODEL=model_name       # Override voice model
     PIPER_VOICES_DIR=path        # Custom voice models directory
+    PIPER_SPEED=1.5              # Override playback speed
     
 EXAMPLES:
-    $0 "Hello world"             # Speak "Hello world"
+    $0 "Hello world"             # Speak "Hello world" at 2x speed (default)
+    $0 --speed 1.0 "Hello"       # Speak at normal speed
+    $0 -s 3.0                    # Speak clipboard at 3x speed
     echo "Test" | pbcopy && $0   # Copy text and speak it
     PIPER_MODEL=en_GB-alba-medium $0  # Use British English voice
+    PIPER_SPEED=1.5 $0           # Use 1.5x speed via environment variable
 
 INSTALLATION:
     Run this script in Terminal to auto-install all dependencies.
@@ -320,8 +364,8 @@ rm -f /tmp/piper_clip*.wav 2>/dev/null
 # =============================================================================
 
 # Get text input
-if [ -n "$1" ]; then
-    TEXT="$1"
+if [ -n "$TEXT_INPUT" ]; then
+    TEXT="$TEXT_INPUT"
     log_info "Using provided text: ${TEXT:0:50}..."
 else
     TEXT="$(pbpaste)"
