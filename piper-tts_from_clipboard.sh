@@ -1,12 +1,16 @@
 #!/bin/bash
+
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Piper TTS Clipboard
+# @raycast.title Speak Clipboard
 # @raycast.mode compact
+# @raycast.packageName Text to Speech
 # @raycast.icon 🔊
+
 # Documentation:
-# @raycast.description Speak clipboard with Piper TTS at 2x speed
-# @raycast.author hunter howe
+# @raycast.description Speak clipboard content with Piper TTS at 2x speed
+# @raycast.author Hunter Howe
+# @raycast.authorURL https://github.com/howe-hunter
 
 # =============================================================================
 # CONFIGURATION - Customize these settings
@@ -16,9 +20,29 @@
 DEFAULT_MODEL="en_GB-alba-medium"  # British English model
 
 # Speed multiplier for audio playback (1.0 = normal, 2.0 = double speed)
-# Can be overridden with PIPER_SPEED environment variable
+# Can be overridden with PIPER_SPEED environment variable or persistent file
 DEFAULT_SPEED="2.0"
-SPEED_MULTIPLIER="${PIPER_SPEED:-$DEFAULT_SPEED}"
+SPEED_FILE="$HOME/.piper-tts-speed"
+
+# Get speed from persistent file or environment or default
+get_current_speed() {
+    # Priority: PIPER_SPEED env var > persistent file > default
+    if [[ -n "$PIPER_SPEED" ]]; then
+        echo "$PIPER_SPEED"
+    elif [[ -f "$SPEED_FILE" ]]; then
+        local speed_index=$(cat "$SPEED_FILE" 2>/dev/null || echo "3")
+        local speeds=("0.8" "1.0" "1.5" "2.0" "2.5" "3.0")
+        if [[ $speed_index -ge 0 && $speed_index -lt ${#speeds[@]} ]]; then
+            echo "${speeds[$speed_index]}"
+        else
+            echo "$DEFAULT_SPEED"
+        fi
+    else
+        echo "$DEFAULT_SPEED"
+    fi
+}
+
+SPEED_MULTIPLIER=$(get_current_speed)
 
 # Debug mode (set DEBUG=1 to enable verbose output)
 DEBUG="${DEBUG:-0}"
@@ -80,30 +104,6 @@ select_speed_interactive() {
     echo
 }
 
-# Cycle through common speeds with persistent state
-cycle_speed() {
-    local speed_file="$HOME/.piper-tts-speed"
-    local speeds=("1.0" "1.5" "2.0" "2.5" "3.0")
-    local speed_names=("Normal" "Comfortable" "Default (2x)" "Very Fast" "Maximum")
-    
-    # Read current speed index, default to 2 (2.0x)
-    local current_index=2
-    if [[ -f "$speed_file" ]]; then
-        current_index=$(cat "$speed_file" 2>/dev/null || echo "2")
-    fi
-    
-    # Cycle to next speed
-    current_index=$(( (current_index + 1) % ${#speeds[@]} ))
-    
-    # Save new index
-    echo "$current_index" > "$speed_file"
-    
-    # Set speed
-    SPEED_MULTIPLIER="${speeds[$current_index]}"
-    
-    echo "🔄 Speed cycled to: ${SPEED_MULTIPLIER}x (${speed_names[$current_index]})"
-    echo
-}
 
 # Check if a command exists
 command_exists() {
@@ -264,11 +264,6 @@ while [[ $# -gt 0 ]]; do
             select_speed_interactive
             shift
             ;;
-        --cycle-speed)
-            # Cycle through common speeds
-            cycle_speed
-            shift
-            ;;
         --*|-*)
             log_error "Unknown option: $1"
             echo "Use --help for usage information" >&2
@@ -300,7 +295,6 @@ USAGE:
 OPTIONS:
     -s, --speed SPEED            # Playback speed (1.0=normal, 2.0=double, etc.)
     --interactive-speed          # Interactive speed selection menu
-    --cycle-speed                # Cycle through common speeds (1.0→1.5→2.0→2.5→3.0)
     -h, --help                   # Show this help
 
 CONFIGURATION:
@@ -316,7 +310,6 @@ EXAMPLES:
     PIPER_MODEL=en_GB-alba-medium $0  # Use British English voice
     PIPER_SPEED=1.5 $0           # Use 1.5x speed via environment variable
     $0 --interactive-speed       # Choose speed from menu (great for Raycast)
-    $0 --cycle-speed             # Cycle to next speed (perfect for Raycast)
 
 INSTALLATION:
     Run this script in Terminal to auto-install all dependencies.

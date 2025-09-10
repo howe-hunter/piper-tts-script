@@ -12,7 +12,6 @@ This is a collection of Piper Text-to-Speech (TTS) automation scripts designed f
 
 - **`piper-tts_from_clipboard.sh`** - Main TTS script with comprehensive functionality including dependency management, voice model handling, speed controls, and both CLI and Raycast integration
 - **`install.sh`** - Automated installer that downloads scripts and sets up the environment
-- **`raycast-tts-speed-toggle.sh`** - Raycast wrapper for cycling through playback speeds with visual feedback
 - **`raycast-tts-speed-selector.sh`** - Interactive Raycast script for selecting specific TTS speeds with menu interface
 
 ### Key Dependencies
@@ -50,9 +49,6 @@ DEBUG=1 ./piper-tts_from_clipboard.sh "Debug test"
 ```bash
 # Test installer script
 ./install.sh
-
-# Test speed toggle (for Raycast integration)
-./raycast-tts-speed-toggle.sh
 
 # Test interactive speed selector (for Raycast integration)
 ./raycast-tts-speed-selector.sh --help
@@ -111,7 +107,6 @@ The main script uses a function-based architecture with:
 ```
 scripts/
 ├── piper-tts_from_clipboard.sh    # Main TTS engine
-├── raycast-tts-speed-toggle.sh    # Raycast speed cycling wrapper
 ├── raycast-tts-speed-selector.sh  # Raycast interactive speed selection
 ├── install.sh                     # Automated setup
 └── README.md                      # User documentation

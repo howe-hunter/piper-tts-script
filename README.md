@@ -1,233 +1,194 @@
-# Piper TTS Script
+# Piper TTS Script for Raycast
 
-> AI-assisted development using [Perplexity AI](https://perplexity.ai) and [Warp Terminal](https://warp.dev)
+> Convert text to high-quality speech using [Piper TTS](https://github.com/rhasspy/piper) with seamless Raycast integration
 
-Converts text to high-quality speech using [Piper TTS](https://github.com/rhasspy/piper). Works from Terminal or Raycast with automatic setup.
+**Perfect for:** Listening to articles, emails, and web content at 2x speed while multitasking.
 
-## What This Does
-- Reads text from your clipboard and speaks it aloud
-- Automatically installs all required software (ffmpeg, piper-tts)
-- Works in Terminal, Raycast, and other automation tools
-- Supports multiple languages and voice models
-- Plays audio at 2x speed by default (customizable)
-- Handles both clipboard text and direct text input
+## ✨ Features
+- 🔊 **Instant speech**: Copy text, run command, hear it spoken
+- ⚡ **Speed control**: Interactive speed selector (0.8x to 3.0x)
+- 🤖 **Auto-setup**: Installs all dependencies automatically
+- 🎯 **Raycast optimized**: Built specifically for Raycast integration
+- 🌍 **Multi-language**: Support for 40+ languages and voices
+- 💾 **Persistent settings**: Remembers your speed preferences
 
-## Installation
+## 🚀 Complete Setup Guide
 
-### Quick Setup (Recommended)
-1. Open Terminal (find it in Applications > Utilities)
-2. Copy and paste this command:
+### Step 1: Install Raycast
+1. Download Raycast from [raycast.com](https://raycast.com)
+2. Install and launch Raycast
+3. Complete the initial setup
+4. Test that Raycast opens with `Cmd + Space`
+
+### Step 2: Download TTS Scripts
+**Option A: Quick Install (Recommended)**
 ```bash
+# Open Terminal and run this one command:
 curl -fsSL https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/install.sh | bash
 ```
-3. Press Enter and wait for installation to complete
-4. The script will be installed to `~/piper-tts-script/`
 
-### Manual Installation
-If you prefer to download manually:
-
-1. Download the script file:
+**Option B: Manual Install**
 ```bash
-curl -O https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/piper-tts_from_clipboard.sh
+# Clone the repository
+git clone https://github.com/howe-hunter/piper-tts-script.git
+cd piper-tts-script
+
+# Make scripts executable
+chmod +x *.sh
+
+# Test installation
+./piper-tts_from_clipboard.sh "Installation test"
 ```
 
-2. Make it executable:
+**ℹ️ Note:** The first run installs all dependencies automatically (Homebrew, ffmpeg, piper-tts). This may take 2-3 minutes.
+
+### Step 3: Add Scripts to Raycast
+
+#### 🔊 Basic TTS Command (Speaks at 2x speed)
+1. **Open Raycast** (`Cmd + Space`)
+2. **Type:** "Create Script Command" and press Enter
+3. **Fill out the form:**
+   - **Title:** `Speak Clipboard`
+   - **Script:** `/path/to/your/piper-tts_from_clipboard.sh`
+     - Quick install path: `~/piper-tts-script/piper-tts_from_clipboard.sh`
+     - Manual install: `~/piper-tts-script/piper-tts_from_clipboard.sh`
+   - **Shell:** `bash`
+   - **Mode:** `compact`
+   - **Package Name:** `Text to Speech`
+   - **Icon:** 🔊 (or any emoji)
+   - **Keyword:** `speak` (what you'll type to trigger it)
+4. **Click "Create"**
+
+#### ⚡ Speed Selector Command (Choose your speed)
+1. **In Raycast**, create another Script Command
+2. **Fill out the form:**
+   - **Title:** `TTS Speed Selector`
+   - **Script:** `/path/to/your/raycast-tts-speed-selector.sh`
+     - Quick install path: `~/piper-tts-script/raycast-tts-speed-selector.sh`
+     - Manual install: `~/piper-tts-script/raycast-tts-speed-selector.sh`
+   - **Shell:** `bash`
+   - **Mode:** `fullOutput` ⚠️ **Important: Must be fullOutput for interactive menu!**
+   - **Package Name:** `Text to Speech`
+   - **Icon:** ⚡ (or any emoji)
+   - **Keyword:** `speed` (what you'll type to trigger it)
+3. **Click "Create"**
+
+### Step 4: Test Your Setup
+1. **Copy some text** (select text and press `Cmd + C`)
+2. **Test basic command:**
+   - Press `Cmd + Space` → Type `speak` → Press `Enter`
+   - You should hear the text at 2x speed
+3. **Test speed selector:**
+   - Press `Cmd + Space` → Type `speed` → Press `Enter`
+   - Choose a speed option → Press `Enter`
+   - Text should play at your selected speed
+
+## 🎉 You're Ready!
+
+### Daily Workflow
+1. **Copy any text** (`Cmd + C`) - articles, emails, PDFs, web pages
+2. **Quick TTS**: `Cmd + Space` → `speak` → `Enter` (plays at 2x speed)
+3. **Custom speed**: `Cmd + Space` → `speed` → choose option → `Enter`
+
+### ⚡ Speed Guide
+- **🐌 0.8x** - Learning new languages, complex technical content
+- **🚶 1.0x** - First-time reading, important documents
+- **🏃 1.5x** - Articles, emails, most web content  
+- **🏎️ 2.0x** - News, familiar content (default)
+- **⚡ 2.5x** - Quick scanning, reviews
+- **🚀 3.0x** - Very familiar content
+
+### Pro Tips
+- Speed settings are **persistent** - your choice is remembered
+- Works with **any text**: web pages, PDFs, emails, documents
+- **Multitask** while listening - perfect for long articles
+- Use **different voices** by setting `PIPER_MODEL` environment variable
+
+## 🔧 Advanced Customization
+
+### Change Voice (Optional)
+Default voice is British English. To use different voices:
+
 ```bash
-chmod +x piper-tts_from_clipboard.sh
-```
-
-3. Run it once to install dependencies:
-```bash
-./piper-tts_from_clipboard.sh
-```
-
-**Note**: The first run will automatically install ffmpeg and piper-tts. This requires Homebrew, which will also be installed if needed.
-
-## How to Use
-
-### From Terminal
-Open Terminal and run the script:
-
-```bash
-# Speak whatever text is currently in your clipboard (2x speed default)
-./piper-tts_from_clipboard.sh
-
-# Speak specific text directly
-./piper-tts_from_clipboard.sh "Hello world, this is a test"
-
-# Control playback speed
-./piper-tts_from_clipboard.sh --speed 1.0      # Normal speed
-./piper-tts_from_clipboard.sh -s 3.0          # 3x speed (clipboard)
-./piper-tts_from_clipboard.sh -s 1.5 "Hello"  # 1.5x speed with text
-
-# Show all available options
-./piper-tts_from_clipboard.sh --help
-```
-
-**Tip**: Copy any text to your clipboard (Cmd+C), then run the script to hear it spoken aloud.
-
-### Raycast Integration
-Raycast is a productivity app that lets you run scripts with keyboard shortcuts.
-
-1. **Install Raycast** (if you haven't already): Download from [raycast.com](https://raycast.com)
-
-2. **Add the Script**:
-   - Open Raycast (Cmd+Space)
-   - Type "Create Script Command" and press Enter
-   - Or go to Raycast → Extensions → Script Commands → Add Script Command
-
-3. **Configure the Script**:
-   - **Title**: "Speak Clipboard" (or whatever you prefer)
-   - **Script**: Enter the full path to your script file
-     - If you used quick setup: `~/piper-tts-script/piper-tts_from_clipboard.sh`
-     - If manual: `/path/to/your/piper-tts_from_clipboard.sh`
-   - **Shell**: `bash`
-   - **Mode**: `compact`
-   - **Package Name**: `TTS` or `Text to Speech`
-   - **Icon**: Choose a microphone or speaker emoji
-   - **Keyword**: `tts`, `speak`, or `read` (whatever you want to type to trigger it)
-
-4. **Use It**:
-   - Copy any text (Cmd+C)
-   - Open Raycast (Cmd+Space)
-   - Type your keyword (e.g., "tts")
-   - Press Enter to hear your text spoken
-
-## Customization
-
-### Change Voice Model
-The script uses British English by default. To use a different voice:
-
-```bash
-# Use American English (if you have the model)
+# American English
 export PIPER_MODEL="en_US-lessac-medium"
-./piper-tts_from_clipboard.sh
 
-# Use German (if you have the model)
-export PIPER_MODEL="de_DE-thorsten-medium"
-./piper-tts_from_clipboard.sh
+# View available voices
+ls ~/.local/share/piper/models/
 ```
 
-### Change Speaking Speed
-Multiple ways to control playback speed:
-
-**Command line (easiest)**:
-```bash
-./piper-tts_from_clipboard.sh --speed 1.0     # Normal speed
-./piper-tts_from_clipboard.sh -s 1.5          # 1.5x speed
-```
-
-**Environment variable**:
-```bash
-export PIPER_SPEED=1.5
-./piper-tts_from_clipboard.sh                 # Uses 1.5x speed
-```
-
-**Edit script file** (permanent change):
-```bash
-DEFAULT_SPEED="1.0"  # Change default from 2.0 to 1.0
-```
-
-### Custom Voice Directory
-If you want to store voice models in a specific location:
-```bash
-export PIPER_VOICES_DIR="/Users/yourname/MyVoices"
-```
-
-## Voice Models and Languages
-
-The script comes with British English voice by default. You can add more languages and voices.
-
-### Available Languages
-- **English**: US, UK, Australian accents
-- **European**: French, German, Spanish, Italian, Dutch, Portuguese
-- **Other**: Russian, Arabic, and many more
-
-### Adding New Voices
-1. **Browse available voices**: Visit [Hugging Face Piper Voices](https://huggingface.co/rhasspy/piper-voices)
-
-2. **Download a voice model**: 
-```bash
-# Go to the voice models directory
-cd ~/.local/share/piper/models
-
-# Example: Download American English voice
-curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx" -o en_US-lessac-medium.onnx
-curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json" -o en_US-lessac-medium.onnx.json
-```
-
-3. **Use the new voice**:
-```bash
-PIPER_MODEL=en_US-lessac-medium ./piper-tts_from_clipboard.sh
-```
-
-### Popular Voice Models
-- `en_US-lessac-medium` - American English (clear, professional)
+### Voice Downloads
+**Popular voices** (auto-download on first use):
 - `en_GB-alba-medium` - British English (default)
+- `en_US-lessac-medium` - American English
 - `fr_FR-siwis-medium` - French
 - `de_DE-thorsten-medium` - German
 - `es_ES-davefx-medium` - Spanish
 
-## Troubleshooting
+**Browse all voices:** [Hugging Face Piper Voices](https://huggingface.co/rhasspy/piper-voices)
 
-### If Something Goes Wrong
-
-**Enable debug mode** to see detailed information:
+### Terminal Usage (Optional)
+You can also use the scripts directly in Terminal:
 ```bash
-DEBUG=1 ./piper-tts_from_clipboard.sh
+# Quick TTS
+./piper-tts_from_clipboard.sh
+
+# Custom speed
+./piper-tts_from_clipboard.sh --speed 1.5
+
+# Specific text
+./piper-tts_from_clipboard.sh "Hello world"
 ```
 
-### Common Issues and Solutions
+## 🔍 Troubleshooting
 
-**"Command not found" or "Dependencies missing"**
-- Solution: Run the script once in Terminal to auto-install everything
-- The script will install Homebrew, ffmpeg, and piper-tts automatically
+### Common Issues
 
-**"Voice model not found"**
-- Check what models you have: `ls ~/.local/share/piper/models/`
-- The script will try to download the default model on first run
-- If that fails, manually download a model (see Voice Models section above)
-
-**"No audio" or "Audio not playing"**
-- Test your audio: `ffplay /System/Library/Sounds/Ping.aiff`
-- Check your volume and audio output device
-- Try running the script from Terminal first to see error messages
-
-**Raycast not working**
-- Make sure you're using the full path to the script file
+**❌ "Script not found" in Raycast**
+- Use the **full absolute path** to your script file
 - Example: `/Users/yourname/piper-tts-script/piper-tts_from_clipboard.sh`
-- Try running the script in Terminal first to ensure it works
-- Check that the script file has execute permissions: `chmod +x scriptname.sh`
+- Don't use `~` - use the complete path starting with `/Users/`
 
-**Script runs but no sound**
-- Your clipboard might be empty - copy some text first
-- The text might be too long - try with shorter text
-- Check if other apps are using your audio
+**❌ "Clipboard is empty" message**
+- Copy some text first with `Cmd + C`
+- The script needs text in your clipboard to work
 
-## System Requirements
-- **macOS**: Version 11 (Big Sur) or newer
-- **Disk Space**: About 50MB for the software and voice models  
-- **Internet**: Required for initial setup and downloading voice models
-- **Audio**: Working speakers or headphones
+**❌ No sound / Audio not playing**
+- Check your volume and audio output device
+- Test audio: run in Terminal first to see error messages
+- Make sure no other apps are using audio
 
-## Technical Details
+**❌ Speed selector shows no menu (Raycast)**
+- Make sure Mode is set to `fullOutput` (not `compact`)
+- This is required for interactive menus in Raycast
 
-### File Locations
-- **Voice models**: `~/.local/share/piper/models/`
-- **Piper binary**: `~/.local/bin/piper` (installed via pipx)
-- **Temporary audio files**: `/tmp/piper_clip_*.wav` (auto-cleaned)
+**❌ Dependencies missing**
+- Run the script in Terminal once to auto-install everything
+- This installs Homebrew, ffmpeg, and piper-tts automatically
 
-### What Gets Installed
-When you first run the script, it automatically installs:
-- **Homebrew**: macOS package manager (if not already installed)
-- **ffmpeg**: Audio processing software
-- **pipx**: Python application installer  
-- **piper-tts**: The text-to-speech engine
+### Debug Mode
+```bash
+# See detailed information
+DEBUG=1 ./piper-tts_from_clipboard.sh "test"
+```
 
-## Credits and Acknowledgments
-- **[Piper TTS](https://github.com/rhasspy/piper)** - The excellent neural text-to-speech system that powers this script
-- **[Rhasspy Community](https://github.com/rhasspy)** - For creating and maintaining the voice models
-- **[Perplexity AI](https://perplexity.ai)** - AI research assistance during development
-- **[Warp Terminal](https://warp.dev)** - AI-powered terminal used for collaborative development
+### System Requirements
+- **macOS** 11+ (Big Sur or newer)
+- **50MB** disk space
+- **Internet** for initial setup
+- **Audio output** (speakers/headphones)
 
-This project demonstrates human-AI collaboration in software development, combining human creativity with AI assistance to create a robust, user-friendly tool.
+---
+
+## 🎆 Credits
+
+**Powered by:**
+- [Piper TTS](https://github.com/rhasspy/piper) - Neural text-to-speech engine
+- [Rhasspy Community](https://github.com/rhasspy) - Voice models
+- [Raycast](https://raycast.com) - Productivity launcher
+
+**Built with AI assistance from:**
+- [Warp Terminal](https://warp.dev) - AI-powered terminal
+- [Perplexity AI](https://perplexity.ai) - Research assistance
+
+*Enjoy your new superpower! 🎧*

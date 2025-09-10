@@ -1,18 +1,16 @@
 #!/bin/bash
 
-# =============================================================================
-# Raycast TTS Speed Selector - Interactive Speed Selection
-# =============================================================================
-# Raycast-optimized script for interactively selecting TTS speech speeds
-#
-# Raycast Parameters:
 # Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title TTS Speed Selector
 # @raycast.mode fullOutput
+# @raycast.packageName Text to Speech
 # @raycast.icon ⚡
-# @raycast.description Set TTS playback speed and speak clipboard
-# @raycast.packageName Text-to-Speech
+
+# Documentation:
+# @raycast.description Set TTS playback speed and speak clipboard content
+# @raycast.author Hunter Howe
+# @raycast.authorURL https://github.com/howe-hunter
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
