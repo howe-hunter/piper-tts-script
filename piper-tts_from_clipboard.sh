@@ -75,7 +75,7 @@ find_piper() {
 # Find voice model directory
 find_voice_dir() {
     local voice_dirs=(
-        "$HOME/Desktop/piper-tts-script/voices"  # Desktop installation voices directory
+        "$HOME/Documents/piper-tts-script/voices"  # Documents installation voices directory
         "$(pwd)"                           # Current directory
         "$HOME/.local/share/piper/models"  # Default piper models directory
         "$HOME/Documents/piper-voices"     # Common user location
@@ -270,7 +270,7 @@ VOICE_DIR=$(find_voice_dir)
 log_debug "Found voice directory: $VOICE_DIR"
 if [ -z "$VOICE_DIR" ]; then
     # Create default voice directory on Desktop
-    VOICE_DIR="$HOME/Desktop/piper-tts-script/voices"
+    VOICE_DIR="$HOME/Documents/piper-tts-script/voices"
     mkdir -p "$VOICE_DIR"
     
     # Download default model if we're in interactive mode
