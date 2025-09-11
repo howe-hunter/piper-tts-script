@@ -21,7 +21,7 @@ Converts text to high-quality speech using [Piper TTS](https://github.com/rhassp
 curl -fsSL https://raw.githubusercontent.com/howe-hunter/piper-tts-script/main/install.sh | bash
 ```
 3. Press Enter and wait for installation to complete
-3. The script will be installed to `~/Desktop/piper-tts-script/`
+3. The script will be installed to `~/Documents/piper-tts-script/`
 
 ### Manual Installation
 If you prefer to download manually:
@@ -68,7 +68,7 @@ To use this script with Raycast:
 1. Install [Raycast](https://raycast.com) if you haven't already
 2. Open Raycast preferences and go to Extensions → Script Commands
 3. Point Raycast to the folder where you installed this script:
-   - If you used quick setup: `~/Desktop/piper-tts-script/`
+   - If you used quick setup: `~/Documents/piper-tts-script/`
    - If manual installation: the folder containing `piper-tts_from_clipboard.sh`
 4. Raycast will automatically detect and add the script as a command
 
@@ -116,7 +116,7 @@ The script comes with British English voice by default. You can add more languag
 2. **Download a voice model**: 
 ```bash
 # Go to the voice models directory
-cd ~/Desktop/piper-tts-script/voices
+cd ~/Documents/piper-tts-script/voices
 
 # Example: Download American English voice
 curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx" -o en_US-lessac-medium.onnx
@@ -151,7 +151,7 @@ DEBUG=1 ./piper-tts_from_clipboard.sh
 - The script will install Homebrew, ffmpeg, and piper-tts automatically
 
 **"Voice model not found"**
-- Check what models you have: `ls ~/Desktop/piper-tts-script/voices/`
+- Check what models you have: `ls ~/Documents/piper-tts-script/voices/`
 - The script will try to download the default model on first run
 - If that fails, manually download a model (see Voice Models section above)
 
@@ -162,7 +162,7 @@ DEBUG=1 ./piper-tts_from_clipboard.sh
 
 **Raycast not working**
 - Make sure you're using the full path to the script file
-- Example: `/Users/yourname/Desktop/piper-tts-script/piper-tts_from_clipboard.sh`
+- Example: `/Users/yourname/Documents/piper-tts-script/piper-tts_from_clipboard.sh`
 - Try running the script in Terminal first to ensure it works
 - Check that the script file has execute permissions: `chmod +x scriptname.sh`
 
@@ -180,7 +180,7 @@ DEBUG=1 ./piper-tts_from_clipboard.sh
 ## Technical Details
 
 ### File Locations
-- **Voice models**: `~/Desktop/piper-tts-script/voices/`
+- **Voice models**: `~/Documents/piper-tts-script/voices/`
 - **Piper binary**: `~/.local/bin/piper` (installed via pipx)
 - **Temporary audio files**: `/tmp/piper_clip_*.wav` (auto-cleaned)
 
