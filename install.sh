@@ -10,7 +10,7 @@ echo "🔊 Installing Piper TTS Clipboard Script..."
 echo
 
 # Create installation directory
-INSTALL_DIR="$HOME/Desktop/piper-tts-script"
+INSTALL_DIR="$HOME/Documents/piper-tts-script"
 mkdir -p "$INSTALL_DIR"
 mkdir -p "$INSTALL_DIR/voices"
 
