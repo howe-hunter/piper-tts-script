@@ -62,31 +62,17 @@ Open Terminal and run the script:
 **Tip**: Copy any text to your clipboard (Cmd+C), then run the script to hear it spoken aloud.
 
 ### Raycast Integration
-Raycast is a productivity app that lets you run scripts with keyboard shortcuts.
 
-1. **Install Raycast** (if you haven't already): Download from [raycast.com](https://raycast.com)
+To use this script with Raycast:
 
-2. **Add the Script**:
-   - Open Raycast (Cmd+Space)
-   - Type "Create Script Command" and press Enter
-   - Or go to Raycast → Extensions → Script Commands → Add Script Command
+1. Install [Raycast](https://raycast.com) if you haven't already
+2. Open Raycast preferences and go to Extensions → Script Commands
+3. Point Raycast to the folder where you installed this script:
+   - If you used quick setup: `~/piper-tts-script/`
+   - If manual installation: the folder containing `piper-tts_from_clipboard.sh`
+4. Raycast will automatically detect and add the script as a command
 
-3. **Configure the Script**:
-   - **Title**: "Speak Clipboard" (or whatever you prefer)
-   - **Script**: Enter the full path to your script file
-     - If you used quick setup: `~/piper-tts-script/piper-tts_from_clipboard.sh`
-     - If manual: `/path/to/your/piper-tts_from_clipboard.sh`
-   - **Shell**: `bash`
-   - **Mode**: `compact`
-   - **Package Name**: `TTS` or `Text to Speech`
-   - **Icon**: Choose a microphone or speaker emoji
-   - **Keyword**: `tts`, `speak`, or `read` (whatever you want to type to trigger it)
-
-4. **Use It**:
-   - Copy any text (Cmd+C)
-   - Open Raycast (Cmd+Space)
-   - Type your keyword (e.g., "tts")
-   - Press Enter to hear your text spoken
+Once configured, copy text to your clipboard and run the script through Raycast to hear it spoken.
 
 ## Customization
 
