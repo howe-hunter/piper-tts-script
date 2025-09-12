@@ -55,10 +55,10 @@ Ask Warp AI to help you manage voice models:
 
 ```bash
 # Ask: "How do I list available TTS voice models?"
-ls ~/Desktop/piper-tts-script/voices/
+ls ~/Documents/piper-tts-script/voices/
 
 # Ask: "Download the American English TTS model"
-cd ~/Desktop/piper-tts-script/voices && curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx" -o en_US-lessac-medium.onnx
+cd ~/Documents/piper-tts-script/voices && curl -L "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/lessac/medium/en_US-lessac-medium.onnx" -o en_US-lessac-medium.onnx
 ```
 
 ### Smart TTS Commands
@@ -84,7 +84,7 @@ Save these as reusable Warp Blocks:
 #!/bin/bash
 echo "🔍 Checking TTS Setup..."
 echo "Script location: $(ls -la ~/Desktop/piper-tts-script/piper-tts_from_clipboard.sh)"
-echo "Available voices: $(ls ~/Desktop/piper-tts-script/voices/ 2>/dev/null || echo 'No voices found')"
+echo "Available voices: $(ls ~/Documents/piper-tts-script/voices/ 2>/dev/null || echo 'No voices found')"
 echo "Piper binary: $(which piper)"
 echo "FFmpeg: $(which ffmpeg)"
 ```
@@ -100,11 +100,11 @@ echo "🔊 Testing TTS with sample text..."
 ```bash
 #!/bin/bash
 echo "🎭 Available voice models:"
-ls ~/Desktop/piper-tts-script/voices/*.onnx 2>/dev/null | sed 's/.*\///; s/\.onnx$//' | nl
+ls ~/Documents/piper-tts-script/voices/*.onnx 2>/dev/null | sed 's/.*\///; s/\.onnx$//' | nl
 echo ""
 read -p "Select voice number (or press Enter for default): " choice
 if [ -n "$choice" ]; then
-    voice=$(ls ~/Desktop/piper-tts-script/voices/*.onnx 2>/dev/null | sed 's/.*\///; s/\.onnx$//' | sed -n "${choice}p")
+    voice=$(ls ~/Documents/piper-tts-script/voices/*.onnx 2>/dev/null | sed 's/.*\///; s/\.onnx$//' | sed -n "${choice}p")
     echo "Using voice: $voice"
     PIPER_MODEL="$voice" ~/Desktop/piper-tts-script/piper-tts_from_clipboard.sh "Voice test with $voice"
 else
@@ -157,7 +157,7 @@ echo "TTS Script Status:"
 ls -la ~/Desktop/piper-tts-script/piper-tts_from_clipboard.sh
 echo ""
 echo "Voice Models:"
-ls -la ~/Desktop/piper-tts-script/voices/
+ls -la ~/Documents/piper-tts-script/voices/
 echo ""
 echo "Dependencies:"
 echo "- Homebrew: $(which brew)"

@@ -57,6 +57,11 @@ command_exists() {
 find_piper() {
     local piper_locations=(
         "$HOME/.local/bin/piper"           # pipx installation
+        "$HOME/Library/Python/3.9/bin/piper"  # Python 3.9 user installation
+        "$HOME/Library/Python/3.8/bin/piper"  # Python 3.8 user installation
+        "$HOME/Library/Python/3.10/bin/piper" # Python 3.10 user installation
+        "$HOME/Library/Python/3.11/bin/piper" # Python 3.11 user installation
+        "$HOME/Library/Python/3.12/bin/piper" # Python 3.12 user installation
         "/opt/homebrew/bin/piper"          # Homebrew ARM Mac
         "/usr/local/bin/piper"             # Homebrew Intel Mac
         "$(which piper 2>/dev/null)"       # In PATH
@@ -269,7 +274,7 @@ log_debug "Using voice model: $MODEL"
 VOICE_DIR=$(find_voice_dir)
 log_debug "Found voice directory: $VOICE_DIR"
 if [ -z "$VOICE_DIR" ]; then
-    # Create default voice directory on Desktop
+    # Create default voice directory in Documents
     VOICE_DIR="$HOME/Documents/piper-tts-script/voices"
     mkdir -p "$VOICE_DIR"
     
@@ -325,7 +330,7 @@ if [ -n "$1" ]; then
     TEXT="$1"
     log_info "Using provided text: ${TEXT:0:50}..."
 else
-    TEXT="$(pbpaste)"
+    TEXT="$(pbpaste | head -c 1000)"
     if [ -n "$TEXT" ]; then
         log_info "Using clipboard text: ${TEXT:0:50}..."
     fi
@@ -338,11 +343,6 @@ if [ -z "$TEXT" ]; then
     exit 1
 fi
 
-# Limit text length to prevent extremely long audio
-if [ ${#TEXT} -gt 1000 ]; then
-    log_error "Text is too long (${#TEXT} characters). Maximum supported length is 1000 characters."
-    exit 1
-fi
 
 # Generate TTS audio
 log_info "Generating speech audio..."
