@@ -330,7 +330,7 @@ if [ -n "$1" ]; then
     TEXT="$1"
     log_info "Using provided text: ${TEXT:0:50}..."
 else
-    TEXT="$(pbpaste | head -c 1000)"
+    TEXT="$(pbpaste)"
     if [ -n "$TEXT" ]; then
         log_info "Using clipboard text: ${TEXT:0:50}..."
     fi
