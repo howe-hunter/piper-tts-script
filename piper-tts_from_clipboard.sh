@@ -306,10 +306,6 @@ for dep in ffmpeg ffplay; do
     fi
 done
 
-# =============================================================================
-# CLEANUP FUNCTION
-# =============================================================================
-
 # Cleanup function to remove temporary files
 cleanup() {
     rm -f "$TMPWAV" "$FASTWAV" 2>/dev/null
@@ -376,4 +372,8 @@ if ! ffplay -autoexit -nodisp "$FINAL_AUDIO" 2>/dev/null; then
     exit 1
 fi
 
+# Create informative completion message for Raycast
+word_count=$(echo "$TEXT" | wc -w | tr -d ' ')
+char_count=${#TEXT}
+echo "🎉 Completed! Spoke $word_count words ($char_count characters) at ${SPEED_MULTIPLIER}x speed"
 log_success "Text-to-speech completed successfully!"
